@@ -5,7 +5,7 @@ const config = require("./ciso8583/engine/postbridge-dataelement-config.json");
 const helpers = require("./helpers");
 
 const isoParserClass = Main.default;
-const isoParser = new isoParserClass();
+const isoParser = new isoParserClass(config);
 
 // sign on
 
@@ -148,15 +148,16 @@ const networkPackedMessageObject = isoParser.pack(
 );
 
 const networkStrLength = helpers.getAsciiLengthIndicator(
-  networkPackedMessageObject.isoMessage.length
+  networkPackedMessageObject.isoMessage.toString()
 );
 
 const networkIso = `${networkStrLength}${networkPackedMessageObject.isoMessage}`;
-
+// console.log(networkIso);
 // transaction
 const xmlICC =
   "<IccData><IccRequest><AmountAuthorized>000000000051</AmountAuthorized><AmountOther>000000000000</AmountOther><ApplicationInterchangeProfile>3900</ApplicationInterchangeProfile><ApplicationTransactionCounter>0652</ApplicationTransactionCounter><Cryptogram>5BDAE286405034F5</Cryptogram><CryptogramInformationData>80</CryptogramInformationData><CvmResults>440302</CvmResults><IssuerApplicationData>0110A74003020000000000000000000000FF</IssuerApplicationData><TerminalCapabilities>E0F8C8</TerminalCapabilities><TerminalCountryCode>566</TerminalCountryCode><TerminalType>22</TerminalType><TerminalVerificationResult>0020001000</TerminalVerificationResult><TransactionCurrencyCode>566</TransactionCurrencyCode><TransactionDate>202300</TransactionDate><TransactionType>00</TransactionType><UnpredictableNumber>06355711</UnpredictableNumber></IccRequest></IccData>";
-
+const hexXmlICC =
+  "820239009F3602022D9F2701809F34034103029F10120110A50003020000000000000000000000FF9F330320E0808407A00000000410109F3501229F3704D699BF359F03060000000000009F02060000000100005F3401019F1A0205665F2A0205669C01009F26086E97861DB05A499F9A032308169F410400000003950580800088009F4104000000039F0607A00000000410109F1E083132333435363738";
 const purchaseObject = {
   MTI: "0200",
   dataElement: {
@@ -289,81 +290,83 @@ const purchaseObject = {
     128: null,
   },
 };
-
+const DE_127_2 = new Date().getTime().toString().substring(12, -1);
+const DE_127_13 = "     000000   566";
 let subFieldMessage = {
-  2: null,
-  3: null,
-  4: null,
-  5: null,
-  6: null,
-  7: null,
-  8: null,
-  9: null,
-  10: null,
-  11: null,
-  12: null,
-  13: null,
-  14: null,
-  15: null,
-  16: null,
-  17: null,
-  18: null,
-  19: null,
-  20: null,
-  21: null,
-  22: null,
-  23: null,
-  24: null,
-  25: xmlICC,
-  26: null,
-  27: null,
-  28: null,
-  29: null,
-  30: null,
-  31: null,
-  32: null,
-  33: null,
-  34: null,
-  35: null,
-  36: null,
-  37: null,
-  38: null,
-  39: null,
-  40: null,
-  41: null,
-  42: null,
-  43: null,
-  44: null,
-  45: null,
-  46: null,
-  47: null,
-  48: null,
-  49: null,
-  50: null,
-  51: null,
-  52: null,
-  53: null,
-  54: null,
-  55: null,
-  56: null,
-  57: null,
-  58: null,
-  59: null,
-  60: null,
-  61: null,
-  62: null,
-  63: null,
-  64: null,
+  MTI: null,
+  dataElement: {
+    2: DE_127_2,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+    10: null,
+    11: null,
+    12: null,
+    13: DE_127_13,
+    14: null,
+    15: null,
+    16: null,
+    17: null,
+    18: null,
+    19: null,
+    20: null,
+    21: null,
+    22: null,
+    23: null,
+    24: null,
+    25: xmlICC,
+    26: null,
+    27: null,
+    28: null,
+    29: null,
+    30: null,
+    31: null,
+    32: null,
+    33: null,
+    34: null,
+    35: null,
+    36: null,
+    37: null,
+    38: null,
+    39: null,
+    40: null,
+    41: null,
+    42: null,
+    43: null,
+    44: null,
+    45: null,
+    46: null,
+    47: null,
+    48: null,
+    49: null,
+    50: null,
+    51: null,
+    52: null,
+    53: null,
+    54: null,
+    55: null,
+    56: null,
+    57: null,
+    58: null,
+    59: null,
+    60: null,
+    61: null,
+    62: null,
+    63: null,
+    64: null,
+  },
 };
 
-// subFieldMessage["25"] = xmlICC;
-
 let subIso = isoParser.packSubFieldWithHexadecimalBitmap(
-  subFieldMessage,
+  subFieldMessage.dataElement,
   config["127"].nestedElements
 );
 
-console.log("sub iso message", subIso.isoMessage);
+// console.log("sub iso message", subIso.isoMessage.toString());
 
 purchaseObject.dataElement["127"] = subIso.isoMessage;
 
@@ -373,12 +376,23 @@ const purchasePackedMessageObject = isoParser.pack(
 );
 
 const purchaseStrlength = helpers.getAsciiLengthIndicator(
-  purchasePackedMessageObject.isoMessage.length
+  purchasePackedMessageObject.isoMessage
 );
 
-// console.log(`${purchaseStrlength}${purchasePackedMessageObject}`);
-console.log("final", purchasePackedMessageObject);
+console.log(`${purchaseStrlength}${purchasePackedMessageObject.isoMessage}`);
+// console.log(purchasePackedMessageObject.isoMessage);
 
 const _127message = isoParser.unpack(purchasePackedMessageObject.isoMessage);
+Buffer.from(purchasePackedMessageObject.isoMessage);
+// console.log("unpacked transaction", _127message.dataElements);
 
-console.log("unpacked transaction", _127message);
+const packedIso = isoParser.pack(
+  purchaseObject.MTI,
+  purchaseObject.dataElement
+);
+const isoMessage = Buffer.from(packedIso.isoMessage);
+const isoLength = isoMessage.toString("hex").length / 2;
+const binLength = helpers.getLengthBytes(isoLength);
+const requestISOMsg = Buffer.concat([binLength, isoMessage]);
+
+console.log(requestISOMsg.toString());

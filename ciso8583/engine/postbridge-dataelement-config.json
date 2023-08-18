@@ -1,6 +1,6 @@
 {
   "1": {
-    "contentType": "an",
+    "contentType": "b",
     "maxLength": 8,
     "fixedLength": true
   },
@@ -1133,7 +1133,7 @@
     "fixedLength": false,
     "contentLength": 6,
     "minLength": 0,
-    "maxLength": 999999,
+    "maxLength": 999,
     "contentType": "ans",
     "slug": null,
     "nestedElements": {
