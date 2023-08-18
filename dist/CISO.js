@@ -9,12 +9,14 @@ var __importDefault =
   function (mod) {
     return mod && mod.__esModule ? mod : { default: mod };
   };
-Object.defineProperty(exports, "__esModule", { value: true });
-const hexbin_1 = __importDefault(require("./engine/hexbin"));
-const HexBin = new hexbin_1.default();
-const bitmap_1 = __importDefault(require("./engine/bitmap"));
-const pack_1 = __importDefault(require("./engine/pack"));
-const unpack_1 = __importDefault(require("./engine/unpack"));
+
+// Object.defineProperty(exports, "__esModule", { value: true });
+import hexbin_1 from "./engine/hexbin.js";
+
+const HexBin = new hexbin_1();
+import bitmap_1 from "./engine/bitmap.js";
+import pack_1 from "./engine/pack.js";
+import unpack_1 from "./engine/unpack.js";
 class Main {
   constructor(optionalConfig = null) {
     this.optionalConfig = optionalConfig;
@@ -23,7 +25,7 @@ class Main {
     //TODO: Add options such as null MTI and more
     let response = {};
     response.error = false;
-    const Pack = new pack_1.default(dataElements, this.optionalConfig);
+    const Pack = new pack_1(dataElements, this.optionalConfig);
     Pack.setDataElements();
     if (mti !== null) {
       Pack.setMTI(mti);
@@ -47,7 +49,7 @@ class Main {
     //TODO: Add options such as null MTI and more
     let response = {};
     response.error = false;
-    const Pack = new pack_1.default(dataElements, this.optionalConfig);
+    const Pack = new pack_1(dataElements, this.optionalConfig);
     Pack.setDataElements();
     if (mti !== null) {
       Pack.setMTI(mti);
@@ -79,10 +81,7 @@ class Main {
     //TODO: Add options such as null MTI and more
     let response = {};
     response.error = false;
-    let Pack = new pack_1.default(
-      dataElements,
-      config ? config : this.optionalConfig
-    );
+    let Pack = new pack_1(dataElements, config ? config : this.optionalConfig);
     Pack.setDataElements();
     const binaryBitmap = Pack.binaryBitmap;
     const dataElementPart = Pack.dataElementPart;
@@ -101,10 +100,7 @@ class Main {
     //TODO: Add options such as null MTI and more
     let response = {};
     response.error = false;
-    let Pack = new pack_1.default(
-      dataElements,
-      config ? config : this.optionalConfig
-    );
+    let Pack = new pack_1(dataElements, config ? config : this.optionalConfig);
     Pack.setDataElements();
     let binaryBitmap = Pack.binaryBitmap;
     let dataElementPart = Pack.dataElementPart;
@@ -130,18 +126,14 @@ class Main {
     //TODO: Add options such as null MTI and more
     let MTILength = 4;
     let theMTI = message.substr(0, 4);
-    let Bitmap = new bitmap_1.default(HexBin);
+    let Bitmap = new bitmap_1(HexBin);
     let fullBitmap = Bitmap.getFullBitmap(message, true);
     let secondaryBitmap = fullBitmap.length > 64 ? true : false;
     let dataElementPart = message.substring(
       fullBitmap.length / 4 + MTILength,
       message.length
     );
-    let Unpack = new unpack_1.default(
-      fullBitmap,
-      dataElementPart,
-      this.optionalConfig
-    );
+    let Unpack = new unpack_1(fullBitmap, dataElementPart, this.optionalConfig);
     Unpack.getDataElements();
     let dataElements = Unpack.dataElements;
     const response = {
@@ -164,7 +156,7 @@ class Main {
     // console.log('meassge: '+hexMessage);
     let hexMTI = hexMessage.substr(0, 8);
     let theMTI = Buffer.from(hexMTI, "hex").toString("utf8");
-    let Bitmap = new bitmap_1.default(HexBin);
+    let Bitmap = new bitmap_1(HexBin);
     let fullBitmap = Bitmap.getFullBitmapBinaryBitmap(hexMessage, true);
     let secondaryBitmap = fullBitmap.length > 64 ? true : false;
     let dataElementPart = hexMessage.substring(
@@ -174,11 +166,7 @@ class Main {
     // console.log('dataelementpath: '+ dataElementPart);
     // let dataElementPartUTF8 = Buffer.from(dataElementPart,'hex').toString('utf8');
     // console.log('data Utf8'+dataElementPartUTF8);
-    let Unpack = new unpack_1.default(
-      fullBitmap,
-      dataElementPart,
-      this.optionalConfig
-    );
+    let Unpack = new unpack_1(fullBitmap, dataElementPart, this.optionalConfig);
     Unpack.getDataElements(true);
     let dataElements = Unpack.dataElements;
     response.dataElementPart = dataElementPart;
@@ -192,7 +180,7 @@ class Main {
     //TODO: Add options such as null MTI and more
     let response;
     response.error = false;
-    let Bitmap = new bitmap_1.default(HexBin);
+    let Bitmap = new bitmap_1(HexBin);
     let hexMessage = message;
     let fullBitmap = Bitmap.getFullBitmapBinaryBitmap(hexMessage);
     let secondaryBitmap = fullBitmap.length > 64 ? true : false;
@@ -200,7 +188,7 @@ class Main {
       fullBitmap.length / 4,
       message.length
     );
-    let Unpack = new unpack_1.default(
+    let Unpack = new unpack_1(
       fullBitmap,
       dataElementPart,
       options ? options : this.optionalConfig
@@ -214,4 +202,4 @@ class Main {
     return response;
   }
 }
-exports.default = Main;
+export default Main;

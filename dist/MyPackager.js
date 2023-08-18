@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MyPacker_127 = exports.MyPackager = void 0;
-const jsPos = require('jspos');
+import jsPos from 'jspos';
 const { ISOBasePackager, packer } = jsPos;
 let { IFB_NUMERIC, IFA_NUMERIC, IFA_LLNUM, IFA_AMOUNT, IFB_BITMAP, IFB_LLNUM, IFB_LLLNUM, IF_CHAR, IFB_LLCHAR, IFB_LLLCHAR, IFB_BINARY, IFB_LLBINARY, IFB_LLLBINARY, IFB_AMOUNT, IFA_LLLCHAR, IFA_LLCHAR, IFA_BINARY, IFA_LLLLLCHAR, IFA_LLLLCHAR, IFA_LLLLLLBINARY, ISOMsgFieldPackager } = packer;
 const pad = false;
