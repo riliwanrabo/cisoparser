@@ -98,4 +98,4 @@ class Pack {
         this.binaryBitmap = this.secondaryBitmapBit + this.binaryBitmap;
     }
 }
-exports.default = Pack;
+export const default = Pack;

@@ -1,11 +1,12 @@
-const Main = require("./dist/CISO.js");
-const config = require("./ciso8583/engine/postbridge-dataelement-config.json");
+import Main from "./dist/CISO.js";
+import config from "./ciso8583/engine/postbridge-dataelement-config.json" assert { type: "json" };
+
 // const baseMessage = require('./ciso8583/engine/dataelements.json')
 // const baseSubFieldMessage = require('./ciso8583/engine/subField-data-elements.json')
-const helpers = require("./helpers");
+import helpers from "./helpers.js";
 
-const isoParserClass = Main.default;
-const isoParser = new isoParserClass(config);
+const isoParserClass = new Main(config);
+const isoParser = isoParserClass;
 
 // sign on
 

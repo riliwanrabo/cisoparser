@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "node ciso.js",
     "watch": "nodemon ciso.js",
+    "convert": "cjs-to-es6 --verbose ./dist/engine*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.9",
+    "cjs-to-es6": "^2.0.1",
     "nodemon": "^3.0.1"
   }
 }

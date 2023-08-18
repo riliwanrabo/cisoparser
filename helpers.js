@@ -26,4 +26,4 @@ utils.getLengthBytes = (length) => {
   return Buffer.from(array, "binary");
 };
 
-module.exports = utils;
+export default utils;
